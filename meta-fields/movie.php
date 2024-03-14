@@ -1,30 +1,41 @@
 <?php
 
-function register_movie_meta_fields() {
+// add cmb2 box
+add_action('cmb2_init', 'movie_meta_boxes');
+function movie_meta_boxes() {
 
-    register_meta('post', 'movie_rating', array(
-        'object_subtype' => 'movie',
-        'show_in_rest' => true,
-        'type' => 'string',
-        'single' => true,
-        'sanitize_callback' => 'wp_strip_all_tags',
+    $prefix = 'movie_';
+
+    $cmb = new_cmb2_box(array(
+        'id' => $prefix . 'metabox',
+        'title' => __('Movie Details', 'cmb2'),
+        'object_types' => array('movie'),
+        'context' => 'normal',
+        'priority' => 'high',
+        'show_names' => true,
     ));
 
-    register_meta('post', 'movie_release_year', array(
-        'object_subtype' => 'movie',
-        'show_in_rest' => true,
-        'type' => 'string',
-        'single' => true,
-        'sanitize_callback' => 'wp_strip_all_tags',
+    $cmb->add_field(array(
+        'name' => 'Rating',
+        'id' => $prefix . 'rating',
+        'type' => 'text',
     ));
 
-    register_meta('post', 'movie_director', array(
-        'object_subtype' => 'movie',
-        'show_in_rest' => true,
-        'type' => 'string',
-        'single' => true,
-        'sanitize_callback' => 'wp_strip_all_tags',
+    $cmb->add_field(array(
+        'name' => 'Release Year',
+        'id' => $prefix . 'release_year',
+        'type' => 'text',
+    ));
+
+    $cmb->add_field(array(
+        'name' => 'Director',
+        'id' => $prefix . 'director',
+        'type' => 'text',
+    ));
+
+    $cmb->add_field(array(
+        'name' => 'Poster Image',
+        'id' => $prefix . 'poster_image',
+        'type' => 'file',
     ));
 }
-
-add_action('init', 'register_movie_meta_fields', 0);
